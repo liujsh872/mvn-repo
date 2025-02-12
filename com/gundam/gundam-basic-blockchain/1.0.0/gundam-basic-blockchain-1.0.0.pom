@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.gundam</groupId>
+  <artifactId>gundam-basic-blockchain</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0</version>
+  <description>
+    业务服务-集成服务-blockchain
+  </description>
+
+  <parent>
+    <groupId>com.gundam</groupId>
+    <artifactId>gundam-basic</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.gundam</groupId>
+      <artifactId>gundam-basic-log</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.gundam</groupId>
+      <artifactId>gundam-basic-web</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>annotations</artifactId>
+      <version>3.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.11.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.web3j</groupId>
+      <artifactId>core</artifactId>
+      <version>5.0.0</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>protobuf-java</artifactId>
+          <groupId>com.google.protobuf</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.web3j</groupId>
+      <artifactId>codegen</artifactId>
+      <version>5.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.bitcoinj</groupId>
+      <artifactId>core</artifactId>
+      <version>0.15</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>protobuf-java</artifactId>
+          <groupId>com.google.protobuf</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.tron.trident</groupId>
+      <artifactId>abi</artifactId>
+      <version>0.6.0</version>
+      <scope>system</scope>
+      <systemPath>${pom.basedir}/lib/abi-0.6.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.tron.trident</groupId>
+      <artifactId>utils</artifactId>
+      <version>0.6.0</version>
+      <scope>system</scope>
+      <systemPath>${pom.basedir}/lib/utils-0.6.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.tron.trident</groupId>
+      <artifactId>core</artifactId>
+      <version>0.6.0</version>
+      <scope>system</scope>
+      <systemPath>${pom.basedir}/lib/core-0.6.0.jar</systemPath>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.protobuf</groupId>
+          <artifactId>protobuf-java</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.ethereum</groupId>
+      <artifactId>ethereumj-core</artifactId>
+      <version>1.10.0-RELEASE</version>
+      <scope>system</scope>
+      <systemPath>${pom.basedir}/lib/ethereumj-core-1.10.0-RELEASE.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-stub</artifactId>
+      <version>1.30.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-netty</artifactId>
+      <version>1.30.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-protobuf</artifactId>
+      <version>1.30.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-core</artifactId>
+      <version>1.30.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>1.5.1.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct-processor</artifactId>
+      <version>1.5.1.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+  <properties>
+    <github.global.server>github</github.global.server>
+  </properties>
+
+  <build>
+    <finalName>${project.name}</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <altDeploymentRepository>
+            internal.repo::default::file://${project.build.directory}/mvn-repo
+          </altDeploymentRepository>
+        </configuration>
+      </plugin>
+      <!--      <plugin>-->
+      <!--        <groupId>org.apache.maven.plugins</groupId>-->
+      <!--        <artifactId>maven-compiler-plugin</artifactId>-->
+      <!--        <configuration>-->
+      <!--          <skip>true</skip>-->
+      <!--        </configuration>-->
+      <!--      </plugin>-->
+      <!--2.作用：将本地存储库位置的jar文件发布到github上-->
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.12</version>
+        <configuration>
+          <message>Maven artifacts for ${project.version}</message>
+          <noJekyll>true</noJekyll>
+          <!--本地jar相关文件地址，与上方配置储存库位置(altDeploymentRepository)保持一致-->
+          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+          <!--配置上传到github哪个分支，此处配置格式必须以refs/heads/+分支名称-->
+          <branch>refs/heads/main</branch>
+          <merge>true</merge>
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <!--对应github上创建的仓库名称 name-->
+          <repositoryName>mvn-repo</repositoryName>
+          <!--github 仓库所有者即登录用户名-->
+          <repositoryOwner>liujsh872</repositoryOwner>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- 用来下载 ethereumj-core -->
+  <repositories>
+    <repository>
+      <id>eth</id>
+      <name>eth-rep</name>
+      <url>https://dl.bintray.com/ethereum/maven/</url>
+    </repository>
+  </repositories>
+</project>
