@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.gundam</groupId>
+  <artifactId>gundam-basic-cache</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0</version>
+  <description>
+    基础设施-缓存模块
+    redis
+  </description>
+
+  <parent>
+    <groupId>com.gundam</groupId>
+    <artifactId>gundam-basic</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.gundam</groupId>
+      <artifactId>gundam-basic-log</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache-core</artifactId>
+      <version>2.6.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.redisson</groupId>
+      <artifactId>redisson</artifactId>
+      <version>3.11.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+    </dependency>
+    <!-- 其他依赖 -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+  <properties>
+    <github.global.server>github</github.global.server>
+  </properties>
+
+  <build>
+    <finalName>${project.name}</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <altDeploymentRepository>
+            internal.repo::default::file://${project.build.directory}/mvn-repo
+          </altDeploymentRepository>
+        </configuration>
+      </plugin>
+      <!--2.作用：将本地存储库位置的jar文件发布到github上-->
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.12</version>
+        <configuration>
+          <message>Maven artifacts for ${project.version}</message>
+          <noJekyll>true</noJekyll>
+          <!--本地jar相关文件地址，与上方配置储存库位置(altDeploymentRepository)保持一致-->
+          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+          <!--配置上传到github哪个分支，此处配置格式必须以refs/heads/+分支名称-->
+          <branch>refs/heads/main</branch>
+          <merge>true</merge>
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <!--对应github上创建的仓库名称 name-->
+          <repositoryName>mvn-repo</repositoryName>
+          <!--github 仓库所有者即登录用户名-->
+          <repositoryOwner>liujsh872</repositoryOwner>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
